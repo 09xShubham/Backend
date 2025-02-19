@@ -6,10 +6,9 @@ const userSchema = new mongoose.Schema(
     {
         username: 
         {
-            typeof: String,
+            type: String,
             required: true,
             unique: true,
-            lowercase: true,
             trim: true,
             index: true,
             minlength: 3,
@@ -18,7 +17,7 @@ const userSchema = new mongoose.Schema(
         },
         email: 
         {
-            typeof: String,
+            type: String,
             required: true,
             unique: true,
             lowercase: true,
@@ -28,28 +27,28 @@ const userSchema = new mongoose.Schema(
         },
         fullName: 
         {
-            typeof: String,
+            type: String,
             trim: true,
             index: true,
             required: true,
         },
         avatar: 
         {
-            typeof: String, //cloudnrinary url
-            required: true,
+            type: String, //cloudnrinary url
+            required: true
         },
         coverImage: 
         {
-            typeof: String, //cloudnrinary url
+            type: String, //cloudnrinary url
         },
         password: 
         {
-            typeof: String,
+            type: String,
             required: [true, "Password is required"],
         },
         refreshToken: 
         {
-            typeof: String,
+            type: String,
         },
         watchHistory: 
         {
@@ -67,7 +66,7 @@ userSchema.pre("save", async function (next) {
     {
         return next();
     }
-    this.password = bcrypt.hash(this.password,10)
+    this.password = await bcrypt.hash(this.password,10)
     next();
 })
 
@@ -102,4 +101,4 @@ userSchema.methods.generateRefreshToken = function () {
     )
 }
 
-const User = mongoose.Model("User",userSchema);
+export const User = mongoose.model("User",userSchema);
